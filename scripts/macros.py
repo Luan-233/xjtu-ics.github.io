@@ -4,7 +4,7 @@ def define_env(env):
     @env.macro
     def read_csv(csv_path):
         df = pd.read_csv(csv_path)
-        df["theme"].fillna("TBA", inplace=True)
+        df['theme'] = df['theme'].fillna('TBA')
         df.fillna('', inplace=True)
         # only select Lecture
         df = df[df['title'] == 'Lecture']
