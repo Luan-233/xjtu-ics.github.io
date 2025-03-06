@@ -7,7 +7,7 @@ def define_env(env):
         df['theme'] = df['theme'].fillna('TBA')
         df.fillna('', inplace=True)
         # only select Lecture
-        df = df[df['title'] == 'Lecture']
+        df = df[(df['title'] == 'Lecture') | (df['title'] == 'Lab')]
         df = df.drop(columns=['title', 'end', 'location'])
         df.rename(columns={'start': 'Date','theme': 'Lecture', 'extra': "Labs", "pptLink" : "Materials"}, inplace=True)
         df['Materials'] = df['Materials'].apply(lambda str: f"[:material-presentation-play: Slides]({str}){{.md-button}}" if str != "" else "")

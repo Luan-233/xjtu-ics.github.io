@@ -71,6 +71,9 @@ hide:
           Papa.parse(fileContent, {
             header: true,
             step: function(res) {
+              if (res.data.title == "Lab") {
+                return
+              }
               const Instructors = 'Instructors' in res.data
                                 ? res.data.Instructors
                                 : ``;
@@ -94,7 +97,6 @@ hide:
                   pptLink : pptLink
                 }
               });
-              console.log(res.data)
             }
           })
           return allEvents;
