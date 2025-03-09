@@ -130,7 +130,7 @@ GDB 可以帮助你在运行中捕捉错误：
 
 ### 运行程序
 
-我们使用gdb装载可执行文件：（这里不方便以bomb直接显示，采用与[拆弹实验](/XJTU-ICS-Lab2-Bomb-Lab)中的例子`test`）
+我们使用gdb装载可执行文件：（这里不方便以bomb直接显示，采用与[拆弹实验](../labs/lab2.md)中的例子`test`）
 
 ```bash
 linux> gdb test
