@@ -8,11 +8,12 @@ Lecture,3,2025-03-06T19:10:00,2025-03-06T21:00:00,Machine Prog: Procedures,Danfe
 Lab,3,2025-03-09T23:59:58,2025-03-09T23:59:59,No Lecture,,,,,[datalab](labs/lab1.md) due
 Lecture,4,2025-03-11T19:10:00,2025-03-11T21:00:00,Machine Prog: Data,Danfeng Shan,assets/slides/06-machine-data.pdf,主B-204,3.8-3.9,
 Lecture,4,2025-03-13T19:10:00,2025-03-13T21:00:00,Machine Prog: Advanced,Danfeng Shan,assets/slides/07-machine-advanced.pdf,主B-204,3.10,
-Lecture,5,2025-03-18T19:10:00,2025-03-18T21:00:00,Machine Prog: Advanced,Danfeng Shan,assets/slides/07-machine-advanced.pdf,主B-204,3.10,attacklab out
+Lecture,5,2025-03-18T19:10:00,2025-03-18T21:00:00,Machine Prog: Advanced,Danfeng Shan,assets/slides/07-machine-advanced.pdf,主B-204,3.10,[attacklab](labs/lab3.md) out
 Lecture,5,2025-03-20T19:10:00,2025-03-20T21:00:00,The Memory Hierarchy,Danfeng Shan,,主B-204,6.1-6.3,
 Lab,5,2025-03-23T23:59:58,2025-03-23T23:59:59,No Lecture,,,,,[bomblab](labs/lab2.md) due
 Lecture,6,2025-03-25T19:10:00,2025-03-25T21:00:00,Cache Memories,Danfeng Shan,,主B-204,6.4-6.7,
-Lecture,6,2025-03-27T19:10:00,2025-03-27T21:00:00,Cache Memories,Danfeng Shan,,主B-204,6.4-6.7,"attacklab due, cachelab out"
+Lecture,6,2025-03-27T19:10:00,2025-03-27T21:00:00,Cache Memories,Danfeng Shan,,主B-204,6.4-6.7,"cachelab out"
+Lab,6,2025-03-30T23:59:58,2025-03-30T23:59:59,No Lecture,,,,,[attacklab](labs/lab3.md) due
 Lecture,7,2025-04-01T19:10:00,2025-04-01T21:00:00,,Hao Li,,主B-204,,
 Lecture,7,2025-04-03T19:10:00,2025-04-03T21:00:00,,Hao Li,,主B-204,,
 Lecture,8,2025-04-08T19:10:00,2025-04-08T21:00:00,,Hao Li,,主B-204,,
@@ -37,8 +38,8 @@ DataLab Out,1,2025-02-20T23:59:58,2025-02-20T23:59:59,Data Lab,,labs/lab1/,,,
 DataLab Due,3,2025-03-09T23:59:58,2025-03-09T23:59:59,Data Lab,,labs/lab1/,,,
 BombLab Out,3,2025-03-06T23:59:58,2025-03-06T23:59:59,Bomb Lab,,labs/lab2/,,,
 BombLab Due,5,2025-03-23T23:59:58,2025-03-23T23:59:59,Bomb Lab,,labs/lab2/,,,
-AttackLab Out,5,2025-03-18T23:59:58,2025-03-18T23:59:59,Attack Lab,,,,,
-AttackLab Due,6,2025-03-30T23:59:58,2025-03-30T23:59:59,Attack Lab,,,,,
+AttackLab Out,5,2025-03-18T23:59:58,2025-03-18T23:59:59,Attack Lab,,labs/lab3,,,
+AttackLab Due,6,2025-03-30T23:59:58,2025-03-30T23:59:59,Attack Lab,,labs/lab3,,,
 CacheLab Out,6,2025-03-27T23:59:58,2025-03-27T23:59:59,Cache Lab,,,,,
 CacheLab Due,8,2025-04-13T23:59:58,2025-04-13T23:59:59,Cache Lab,,,,,
 
