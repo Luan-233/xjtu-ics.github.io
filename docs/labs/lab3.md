@@ -293,9 +293,9 @@ PASS
 ```bash
 linux$ python3 autograder.py
 phase1 Score: 10 / 10
-phase2 Score: 0 / 30
-phase3 Score: 0 / 25
-phase4 Score: 0 / 25
+phase2 Score: 0 / 20
+phase3 Score: 0 / 30
+phase4 Score: 0 / 30
 phase5 Score: 0 / 10
 Total Score: 10 / 100 
 ```
@@ -491,9 +491,9 @@ void setval_210(unsigned *p)
 各个`phase`占比如下：
 
 `phase1`：`10`分
-`phase2`：`30`分
-`phase3`：`25`分
-`phase4`：`25`分
+`phase2`：`20`分
+`phase3`：`30`分
+`phase4`：`30`分
 `phase5`：`10`分
 
 为了方便评分，这里要求大家将解题过程所使用的十六进制数字形式的文件分别命名为`phase1~5.txt`，例如`phase3`的十六进制数字形式的答案你需要放在`phase3.txt`文件中，正确命名后，大家可以使用实验目录下的`autograder.py`文件计算自己的得分，一个典型的运行结果如下：
@@ -501,9 +501,9 @@ void setval_210(unsigned *p)
 ```bash
 linux$ python3 autograder.py
 phase1 Score: 10 / 10
-phase2 Score: 30 / 30
-phase3 Score: 25 / 25
-phase4 Score: 25 / 25
+phase2 Score: 20 / 20
+phase3 Score: 30 / 30
+phase4 Score: 30 / 30
 phase5 Score: 0 / 10
 Total Score: 90 / 100
 ```
