@@ -47,13 +47,25 @@ Enjoy!
 **Textbook**: Randal E. Bryant and David R. O'Hallaron, [Computer Systems: A Programmer's Perspective](https://csapp.cs.cmu.edu/), Third Edition, Pearson, 2016
 
 ## Announcements
-!!! info "Announcements for Week 4 :loudspeaker:"
+!!! info "Announcements for Week 5 :loudspeaker:"
 
-    Enjoy the Bomb Lab! :smile:
+    Please note the deadline and release date of labs:
+
+    - BombLab is due this Sunday (2025-03-23 23:59). Don't forget to submit. :warning:
+
+    - DataLab is released this Tuesday (2025-03-18). Enjoy! :smile:
 
     **DON'T CHEAT**. Big Brother is watching you!
 
     ~ XJTU-ICS Course Staff
+
+<!-- !!! info "Announcements for Week 4 :loudspeaker:" -->
+<!---->
+<!--     Enjoy the Bomb Lab! :smile: -->
+<!---->
+<!--     **DON'T CHEAT**. Big Brother is watching you! -->
+<!---->
+<!--     ~ XJTU-ICS Course Staff -->
 <!-- !!! info "Announcements for Week 3 :loudspeaker:" -->
 <!---->
 <!--     Please note the deadline and release date of labs: -->

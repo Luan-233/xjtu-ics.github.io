@@ -9,7 +9,7 @@ Lab,3,2025-03-09T23:59:58,2025-03-09T23:59:59,No Lecture,,,,,[datalab](labs/lab1
 Lecture,4,2025-03-11T19:10:00,2025-03-11T21:00:00,Machine Prog: Data,Danfeng Shan,assets/slides/06-machine-data.pdf,主B-204,3.8-3.9,
 Lecture,4,2025-03-13T19:10:00,2025-03-13T21:00:00,Machine Prog: Advanced,Danfeng Shan,assets/slides/07-machine-advanced.pdf,主B-204,3.10,
 Lecture,5,2025-03-18T19:10:00,2025-03-18T21:00:00,Machine Prog: Advanced,Danfeng Shan,assets/slides/07-machine-advanced.pdf,主B-204,3.10,[attacklab](labs/lab3.md) out
-Lecture,5,2025-03-20T19:10:00,2025-03-20T21:00:00,The Memory Hierarchy,Danfeng Shan,,主B-204,6.1-6.3,
+Lecture,5,2025-03-20T19:10:00,2025-03-20T21:00:00,The Memory Hierarchy,Danfeng Shan,assets/slides/08-memory-hierarchy.pdf,主B-204,6.1-6.3,
 Lab,5,2025-03-23T23:59:58,2025-03-23T23:59:59,No Lecture,,,,,[bomblab](labs/lab2.md) due
 Lecture,6,2025-03-25T19:10:00,2025-03-25T21:00:00,Cache Memories,Danfeng Shan,,主B-204,6.4-6.7,
 Lecture,6,2025-03-27T19:10:00,2025-03-27T21:00:00,Cache Memories,Danfeng Shan,,主B-204,6.4-6.7,"cachelab out"
