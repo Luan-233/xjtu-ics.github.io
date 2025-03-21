@@ -53,7 +53,7 @@ Enjoy!
 
     - BombLab is due this Sunday (2025-03-23 23:59). Don't forget to submit. :warning:
 
-    - DataLab is released this Tuesday (2025-03-18). Enjoy! :smile:
+    - AttackLab is released this Tuesday (2025-03-18). Enjoy! :smile:
 
     **DON'T CHEAT**. Big Brother is watching you!
 
