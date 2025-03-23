@@ -23,6 +23,8 @@ theme:
     - navigation.indexes
     - content.code.copy
     - content.code.select
+    - content.code.annotate
+    - content.tabs
   palette:
     primary: black
   logo: assets/logo.png
@@ -78,6 +80,8 @@ markdown_extensions:
       slugify: !!python/object/apply:pymdownx.slugs.slugify
         kwds:
           case: lower
+  - pymdownx.arithmatex:
+      generic: true
 
 extra:
   version:
@@ -85,6 +89,9 @@ extra:
     alias: true
 extra_css:
   - stylesheets/custom.css
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 # Page tree
 nav:
   - Overview: index.md
