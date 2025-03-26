@@ -26,6 +26,14 @@ Enjoy and Have fun ! 😘
 
 - 上交的代码文件请注意一定不要有编译问题。**0 Warnings的程序**（那肯定更不能有error）才会帮助你顺利获得属于你的分数。
 
+- **不要在piazza上寻求同学或者直接私聊助教帮你debug**，有关要求帮忙debug的内容我们有权利不回答。
+
+- **禁止使用打表的方式完成实验**，一旦被发现，你将收到课程组准备的"惊喜" ☠️
+
+- 不要抄袭同学的代码，本次实验会有**严格的查重机制**
+
+- 文本中使用的**较高级cache**指**靠近CPU**的cache，而**较低级cache**指**靠近内存**的cache。比如，对于L2和L3 cache，则L2是较高级cache, L3是较低级cache
+
 ## 实验环境准备
 
 前置要求：学习完[lab0](./lab0.md)，**不要尝试在windows环境下完成实验**
@@ -126,7 +134,9 @@ $b$位Block Offset是可以在确定目标数据在块中偏移量。
 假设associativity的数量只有一个，即每个组内只有一个cacheline，这实际上就形成了**直接映射（direct mapped）**结构，即数据块被**唯一分配**到一个组内。
 
 !!!note
-    在计算机系统中，很多时候很难评价一种系统的好坏，因为某个系统在某个场景下可能性能很差，但是在另一个场景下可能非常适用，很多时候系统设计需要考虑的就是**trade-off**，即以牺牲一些其他方面的性能为代价，换取在某个方面极致的优化，从而**针对某个场景带来巨大的收益**。上述三种cache结构亦是如此，对于直接映射的方式，由于每个组内只有一个cache line，大大简化了cache查找和evict的逻辑，因此cache hit的时延可以很低，但同时由于只有一个cache line，cache miss率将大大提高。对于全相联结构，只要cache有空闲块，就可以存储数据，因此可以大大降低cache miss率，但同时也大大增加了查找和evict的复杂度，因此增加了访问时延。对于组相联结构，目标就是在二者之间寻找一个平衡。
+    在计算机系统中，很多时候很难评价一种系统的好坏，因为某个系统在某个场景下可能性能很差，但是在另一个场景下可能非常适用，很多时候系统设计需要考虑的就是**trade-off**，即以牺牲一些其他方面的性能为代价，换取在某个方面极致的优化，从而**针对某个场景带来巨大的收益**。
+
+    上述三种cache结构亦是如此，对于直接映射的方式，由于每个组内只有一个cache line，大大简化了cache查找和evict的逻辑，因此cache hit的时延可以很低，但同时由于只有一个cache line，cache miss率将大大提高。对于全相联结构，只要cache有空闲块，就可以存储数据，因此可以大大降低cache miss率，但同时也大大增加了查找和evict的复杂度，因此增加了访问时延。对于组相联结构，目标就是在二者之间寻找一个平衡。
 
 ### 如何处理写操作
 
@@ -160,7 +170,7 @@ cache处理写操作的流程比读取要复杂，因为写入操作涉及**数�
 !!!note
     实际上，在现代的CPU中，几乎每一级cache都使用的是write back/write allocate策略，而write through策略只在早期AMD的CPU上的L1D cache使用过。
 
-    write through的好处是简化了数据一致性的处理，但是会引发大量的总线流量，而访问内存又是一个比较慢的操作（相对于CPU来说），通常对于write through cache会额外引入一块write buffer，用来缓冲大量的写入流量。
+    write through的好处是简化了数据一致性的处理，但是会引发大量的总线流量，而访问内存又是一个比较慢的操作（相对于CPU来说），因此对于write through cache通常会额外引入一块write buffer，用来缓冲大量的写入流量。
 
     write back不会产生大量的总线流量，因此性能较好，但是会产生数据一致性问题，因此需要更复杂的机制来保证数据一致性。不过随着技术的发展，write back带来的收益已经超过write through带来的收益，因此write through已经逐渐淘汰了。
 
@@ -186,7 +196,7 @@ cache处理写操作的流程比读取要复杂，因为写入操作涉及**数�
 
 ### 多级cache组织方式
 
-现代CPU中，CPU和内存的速度差距越来越大。因此CPU内部往往不会仅采用一级cache，而是使用多级cache结构，以优化最坏情况（从内存访问）下的性能。多级cache结构的组织又会引入很多的问题，我们在这里简单讲述一些重要的问题，其他的一些细节问题感兴趣的同学可以自行google。
+现代CPU中，CPU和内存的速度差距越来越大。因此CPU内部往往不会仅采用一级cache，而是使用多级cache结构，以**优化最坏情况（从内存访问）下的性能**。多级cache结构的组织又会引入很多的问题，我们在这里简单讲述一些重要的问题，其他的一些细节问题感兴趣的同学可以自行google。
 
 ### Memory Hierarchy
 
@@ -225,7 +235,50 @@ cache处理写操作的流程比读取要复杂，因为写入操作涉及**数�
 
 ## 开始实验
 
-TODO: 描述实验目录，如何开始实验，实验的基本结构（PartA,B）等。
+首先进入实验目录`cachelab-sp25`，然后运行`ls`查看文件：
+
+```bash
+$ cd cachelab-sp25
+$ ls
+cache-impl.c  csim.c           driver.py   test-trans.c   traces-data-intensive/
+cachelab.c    csim-ref-partA*  Makefile    tracegen.c     traces-hard/
+cachelab.h    csim-ref-partB*  test-csim*  traces-basic/  trans.c
+```
+
+你可以尝试运行`make`进行编译：
+
+```bash
+$ make
+gcc -g -Wall -Werror -m64 -o csim csim.c cachelab.c cache-impl.c
+gcc -g -Wall -Werror -m64 -O0 -c trans.c
+gcc -g -Wall -Werror -m64 -o test-trans test-trans.c cachelab.c trans.o
+gcc -g -Wall -Werror -m64 -O0 -o tracegen tracegen.c trans.o cachelab.c
+```
+
+此时再次运行`ls`，得到的输出如下：
+
+```bash
+$ ls
+cache-impl.c  csim.c           Makefile      tracegen*               traces-hard/
+cachelab.c    csim-ref-partA*  test-csim*    tracegen.c              trans.c
+cachelab.h    csim-ref-partB*  test-trans*   traces-basic/           trans.o
+csim*         driver.py        test-trans.c  traces-data-intensive/
+```
+
+下面是对于实验文件的详细解释：
+
+- `cachelab.h/cachelab.c`：包含了本次实验的一些helper function
+- `cache-impl.c`：cache模拟器的源文件，是在**Part A中唯一需要修改**的文件
+- `csim.c`：cache模拟器的入口文件，助教们在这个文件中帮大家实现好了主要的处理逻辑
+- `csim-ref-partA`：参考cache模拟器，可以与自己的实现进行比对，将在Part A中使用
+- `test-csim`：用于part A测试的文件
+— `traces-*`：三个目录，用于存放在part A中用于测试的文件
+- `csim-ref-partB`：在part B中使用的cache模拟器
+- `trans.c`：part B中你需要修改的文件
+- `tracegen.c`：生成`tracegen`的源文件
+- `tracegen`：part B中用于生成trace的可执行程序
+- `test-trans`：测试part B部分的可执行文件
+- `driver.py`：用于测试总得分的脚本
 
 ## Part A：三级Cache模拟器
 
@@ -250,23 +303,23 @@ TODO: 描述实验目录，如何开始实验，实验的基本结构（PartA,B�
 每个cache的具体配置如下：
 
 - L1D(I) cache
-    - size: 64KB
-    - set: 256
-    - associativity: 4-way
-    - cache line size: 64B
+    - size: 64B
+    - set: 4
+    - associativity: 2-way
+    - cache line size: 8B
     - write policy: write back + write allocate
 - L2 cache
-    - size: 512KB
-    - set: 1024
-    - associativity: 8-way
-    - cache line size: 64B
+    - size: 256B
+    - set: 8
+    - associativity: 4-way
+    - cache line size: 8B
     - write poliy: write back + write allocate
     - inclusion policy: inclusive
 - L3 cache
-    - size: 4MB
-    - set: 2048
-    - associativity: 16-way
-    - cache line size: 128B
+    - size: 2KB
+    - set: 16
+    - associativity: 8-way
+    - cache line size: 16B
     - write policy: write back + write allocate
     - inclusion policy: inclusive
 
@@ -316,10 +369,10 @@ I 0400d7d4,8
 
 不知道大家在看到实验目录下那么多的文件之后，是否感受到头昏眼花了呢？不过，不用担心，为了减轻同学们的负担，助教们已经将大部分代码框架搭建好了，大家只需要在给定的框架中填充代码即可~
 
-在Part A中，你**唯一需要**修改的文件是`csim.c`文件，并且**严禁对其他文件进行任何的改动，尤其是`cachelab.h`和`cachelab.c`文件**，否则可能造成**本地评测和提交之后的评测结果不一致**，产生的**一切后果由自己承担**。⚠️
+在Part A中，你**唯一需要**完成的文件是`cache-impl.c`文件，除此之外，你**严禁修改其他任何文件，包括删除现有文件或者自行创建新文件**。否则可能造成**本地评测和提交之后的评测结果不一致，或者无法编译通过**，产生的**一切后果由自己承担**。⚠️
 
 正如前面提到的，在Part A中你需要实现一个三级cache模拟器。作为参考标准，我们提供了一个
-已经正确实现的cache模拟器作为参考标准，以**二进制可执行程序**的形式发放，命名为`csim-ref`。
+已经正确实现的cache模拟器作为参考标准，以**二进制可执行程序**的形式发放，命名为`csim-ref-partA`。
 
 !!!warning
     假如你缺少这个程序，或者程序损坏无法运行，请立刻联系助教进行处理。
@@ -327,13 +380,14 @@ I 0400d7d4,8
 这个程序接受多个命令行参数，可以通过下面这条命令查看其用法：
 
 ```bash
-./csim-ref -h
-usage: ./csim-ref -t trace_file [-h] [-n] [-v] [-l level] [-d] [-i] [-s set]
+$ ./csim-ref-partA -h
+usage: ./csim-ref-partA -t trace_file [-h] [-n] [-v] [-l level] [-d] [-i] [-s set] [-b breakpoint] 
 options: 
 -h, --help         print this
 -o, --output       output file
 -t, --trace        input trace file (required)
 -n, --snapshot     print cache snapshot
+-b, --breakpoint   print cache info after one specified access, note that it can not be enabled in verbose mode
 -v, --verbose      print information after each cache access, instead of print snapshot at the end
 -l, --level        which cache level [l1--1, l2--2, l3--3] to print (only can be specified when [-n] is enabled)
 -d, --data         data cache (must be specified if level == 1)
@@ -347,7 +401,8 @@ options:
 - `-n`：可选， 打印快照信息
 - `-o`：可选，指定输出信息的文件路径，默认是标准输出
 - `-v`：可选，以详细模式打印信息，这种模式下，相关的统计量和快照信息会在每次进行一次cache访问之后打印，默认是全部trace访问完成之后打印。
-- `-t`: **必选项**，指定输入trace文件的路径
+- `-t`: **必选**，指定输入trace文件的路径
+- `-b`：可选，断点功能，将会打印在某一次cache访问之后的cache状态，注意这个参数**不能和`-v`同时使用**
 
 为了测试cache的正确性以及方便大家debug，助教们为大家写好了打印快照的函数，可以打印所有cache line中的tag，valid和dirty字段的值。
 
@@ -362,18 +417,136 @@ options:
 下面是一个典型的运行结果：
 
 ```bash
-
+$ ./csim-ref-partA -t traces-basic/l1Devict.trace
+L1-d cache hits:0 misses:4 evictions:2
+L1-i cache hits:0 misses:0 evictions:0
+L2 cache hits:2 misses:3 evictions:0
+L3 cache hits:0 misses:3 evictions:0
 ```
 
 使用`-n`开启快照，并且使用`-v`打印详细信息。
 
-简单来说，你的任务就是实现这样一个模拟器（也就是实现`csim.c`），从命令行读取trace文件进行模拟，要求是输出需要和我们提供的标准cache模拟器**完全一致**
+```bash
+$ ./csim-ref-partA -vnt traces-basic/l1Devict.trace
+0: S 0 8
+L1-d cache hits:0 misses:1 evictions:0
+L1-i cache hits:0 misses:0 evictions:0
+L2 cache hits:0 misses:1 evictions:0
+L3 cache hits:0 misses:1 evictions:0
+l1-d cache[0][0]: valid=1, dirty=1, tag=0
+l1-d cache[0][1]: valid=0, dirty=0, tag=0
+l1-d cache[1][0]: valid=0, dirty=0, tag=0
+l1-d cache[1][1]: valid=0, dirty=0, tag=0
+l1-d cache[2][0]: valid=0, dirty=0, tag=0
+l1-d cache[2][1]: valid=0, dirty=0, tag=0
+l1-d cache[3][0]: valid=0, dirty=0, tag=0
+l1-d cache[3][1]: valid=0, dirty=0, tag=0
+l1-i cache[0][0]: valid=0, dirty=0, tag=0
+l1-i cache[0][1]: valid=0, dirty=0, tag=0
+l1-i cache[1][0]: valid=0, dirty=0, tag=0
+l1-i cache[1][1]: valid=0, dirty=0, tag=0
+l1-i cache[2][0]: valid=0, dirty=0, tag=0
+l1-i cache[2][1]: valid=0, dirty=0, tag=0
+l1-i cache[3][0]: valid=0, dirty=0, tag=0
+l1-i cache[3][1]: valid=0, dirty=0, tag=0
+l2 cache[0][0]: valid=1, dirty=0, tag=0
+l2 cache[0][1]: valid=0, dirty=0, tag=0
+...
+l2 cache[7][0]: valid=0, dirty=0, tag=0
+l2 cache[7][1]: valid=0, dirty=0, tag=0
+l2 cache[7][2]: valid=0, dirty=0, tag=0
+l2 cache[7][3]: valid=0, dirty=0, tag=0
+l3 cache[0][0]: valid=1, dirty=0, tag=0
+l3 cache[0][1]: valid=0, dirty=0, tag=0
+l3 cache[0][2]: valid=0, dirty=0, tag=0
+l3 cache[0][3]: valid=0, dirty=0, tag=0
+l3 cache[0][4]: valid=0, dirty=0, tag=0
+l3 cache[0][5]: valid=0, dirty=0, tag=0
+...
+l3 cache[15][6]: valid=0, dirty=0, tag=0
+l3 cache[15][7]: valid=0, dirty=0, tag=0
+1: L 20 8
+```
+
+这会在每一次访问之后打印具体的**访问指令*8，当前的**统计量**和**cache的快照**等。
+
+如果你只对L2感兴趣，可以指定打印L2的某一个set：
+
+```bash
+$ ./csim-ref-partA -vnt traces-basic/l1Devict.trace -l 2 -s 4
+0: S 0 8
+L1-d cache hits:0 misses:1 evictions:0
+L1-i cache hits:0 misses:0 evictions:0
+L2 cache hits:0 misses:1 evictions:0
+L3 cache hits:0 misses:1 evictions:0
+l2 cache[4][0]: valid=0, dirty=0, tag=0
+l2 cache[4][1]: valid=0, dirty=0, tag=0
+l2 cache[4][2]: valid=0, dirty=0, tag=0
+l2 cache[4][3]: valid=0, dirty=0, tag=0
+1: L 20 8
+L1-d cache hits:0 misses:2 evictions:0
+L1-i cache hits:0 misses:0 evictions:0
+L2 cache hits:0 misses:2 evictions:0
+L3 cache hits:0 misses:2 evictions:0
+l2 cache[4][0]: valid=1, dirty=0, tag=0
+l2 cache[4][1]: valid=0, dirty=0, tag=0
+l2 cache[4][2]: valid=0, dirty=0, tag=0
+l2 cache[4][3]: valid=0, dirty=0, tag=0
+2: L 40 8
+L1-d cache hits:0 misses:3 evictions:1
+L1-i cache hits:0 misses:0 evictions:0
+L2 cache hits:1 misses:3 evictions:0
+L3 cache hits:0 misses:3 evictions:0
+l2 cache[4][0]: valid=1, dirty=0, tag=0
+l2 cache[4][1]: valid=0, dirty=0, tag=0
+l2 cache[4][2]: valid=0, dirty=0, tag=0
+l2 cache[4][3]: valid=0, dirty=0, tag=0
+3: L 0 8
+L1-d cache hits:0 misses:4 evictions:2
+L1-i cache hits:0 misses:0 evictions:0
+L2 cache hits:2 misses:3 evictions:0
+L3 cache hits:0 misses:3 evictions:0
+l2 cache[4][0]: valid=1, dirty=0, tag=0
+l2 cache[4][1]: valid=0, dirty=0, tag=0
+l2 cache[4][2]: valid=0, dirty=0, tag=0
+l2 cache[4][3]: valid=0, dirty=0, tag=0
+```
+
+如果你需要全部的cache信息，而只对某一次访问结束之后的cache信息感兴趣，你可以使用`-b`参数指定breakpoint：
+
+```bash
+$ ./csim-ref-partA -nt traces-basic/l1Devict.trace -l 2 -s 4 -b 2
+2: L 40 8
+L1-d cache hits:0 misses:3 evictions:1
+L1-i cache hits:0 misses:0 evictions:0
+L2 cache hits:1 misses:3 evictions:0
+L3 cache hits:0 misses:3 evictions:0
+l2 cache[4][0]: valid=1, dirty=0, tag=0
+l2 cache[4][1]: valid=0, dirty=0, tag=0
+l2 cache[4][2]: valid=0, dirty=0, tag=0
+l2 cache[4][3]: valid=0, dirty=0, tag=0
+L1-d cache hits:0 misses:4 evictions:2
+L1-i cache hits:0 misses:0 evictions:0
+L2 cache hits:2 misses:3 evictions:0
+L3 cache hits:0 misses:3 evictions:0
+l2 cache[4][0]: valid=1, dirty=0, tag=0
+l2 cache[4][1]: valid=0, dirty=0, tag=0
+l2 cache[4][2]: valid=0, dirty=0, tag=0
+l2 cache[4][3]: valid=0, dirty=0, tag=0
+```
+
+这将会打印行数为2（行数从0开始）的指令访问之后的cache信息。
+
+当然，上述参数可以自由组合，不过注意要遵守其约定。
+
+简单来说，你的任务就是实现这样一个模拟器，从命令行读取trace文件进行模拟，要求是输出需要和我们提供的标准cache模拟器**完全一致**
 
 有关文件读取和命令行参数的处理，以及cache结构的声明，助教们已经帮大家完成了：
 
 有关cache的结构，大家可以查看`cachelab.h`文件：
 
 ```c
+// cachelab.h
 ...
 
 #define L1_SET_NUM 4
@@ -388,7 +561,9 @@ options:
 #define L3_LINE_NUM 8
 #define L3_CACHELINE_SIZE 16
 
-#define ADDRESS_WIDTH 64
+#define ADDRESS_LENGTH 64
+
+...
 
 typedef struct {
   bool valid;
@@ -408,15 +583,15 @@ extern CacheLine l3ucache[L3_SET_NUM][L3_LINE_NUM];
 ...
 ```
 
-里面声明了有关cache配置的一些宏定义和cache line的结构体，以及使用二维数组的方式来组织cache，在开始实验之前，你需要读懂这个文件，且**禁止修改任何内容**。
+里面声明了有关cache配置的一些宏定义和cache line的结构体，以及使用二维数组的方式来组织cache，在开始实验之前，你需要读懂并理解这个文件中有关cache定义的内容，且**禁止修改任何内容**。
 
-在`cachelab.c`文件中，助教们已经帮大家写好了命令行参数处理的逻辑，以及文件读取的逻辑，具体如下：
+在`csim.c`中，助教们已经帮大家写好了命令行参数处理的逻辑，以及文件读取的逻辑，具体如下：
 
 ```c
+// csim.c
 ...
 
-  // to be implemented in csim.c
-  cacheInit();
+  cacheInit(); // implemented in cache-impl.c
 
   char buf[BUF_SIZE];
   uint64_t addr;
@@ -432,9 +607,11 @@ extern CacheLine l3ucache[L3_SET_NUM][L3_LINE_NUM];
     }
     sscanf(buf + 3, "%lx,%d", &addr, &len);
     // to be implemented in csim.c
-    cacheAccess(op, addr, len);
-    if (verbose == 1) {
-      fprintf(out, "%c %lx %d\n", op, addr, len);
+    if (verbose == 1 || (current_line == breakpoint)) {
+      fprintf(out, "%ld: %c %lx %d\n", current_line, op, addr, len);
+    }
+    cacheAccess(op, addr, len); // implemented in cache-impl.c
+    if (verbose == 1 || (current_line == breakpoint)) {
       printSummary(l1d_hits, l1d_misses, l1d_evictions, l1i_hits, l1i_misses,
                    l1i_evictions, l2_hits, l2_misses, l2_evictions, l3_hits,
                    l3_misses, l3_evictions);
@@ -442,16 +619,19 @@ extern CacheLine l3ucache[L3_SET_NUM][L3_LINE_NUM];
         printSnapshot();
       }
     }
+    current_line++;
   }
-
 ...
 ```
 
-具体而言，上述代码首先通过`initCache()`函数初始化cache，然后循环读取trace文件的每一行，并且提取出cache访问的一些必要信息，最后调用`csim.c`中定义的函数`cacheAccess()`真正访问cache。
+具体而言，上述代码首先通过`initCache()`函数初始化cache，然后循环读取trace文件的每一行，并且提取出cache访问的一些必要信息，最后调用函数`cacheAccess()`真正访问cache，这两个函数定义在`cache-impl.c`中。
 
-和上述一样，在开始之前，你需要完全理解上述逻辑（不必是整个`cachelab.c`文件），特别是`cacheInit()`和`cacheAccess()`接口的定义，并且**禁止修改有关这个文件里面的任何内容**。
+和上述一样，在开始之前，你需要完全理解上述逻辑（不必是整个`csim.c`文件），特别是`cacheInit()`和`cacheAccess()`接口的定义，并且**禁止修改有关这个文件里面的任何内容**。
 
 `cacheInit`函数不接受任何参数，它的目标是对所有cache进行初始化。
+
+!!!note
+    实际上，C语言的全局变量在被加载到内存时，如果没有初始化，会被**默认初始化为0**。因此，对于cacheInit函数，你可以什么都不做，但是这个函数放在这的目的就是为了告诉大家初始化的重要性。
 
 `cacheAccess`函数接受三个参数，参数的定义为：
 
@@ -459,13 +639,15 @@ extern CacheLine l3ucache[L3_SET_NUM][L3_LINE_NUM];
 - 第二个参数为访问地址，它是**trace文件中的地址的十进制表示**的结果
 - 第三个参数为一次访问的长度，也就是字节数量
 
-最后，终于迎来了我们的主角，`csim.c`。简单来说，你只需要完成这个文件预留的两个函数`initCache()`和`accessCache()`即可。为了给同学们自由的发挥空间，助教们仅给出了函数接口，而没有对实现上提出任何要求，**你可以在这个文件中自由地定义任何变量和函数**。
+最后，终于迎来了我们的主角，`cache-impl.c`。简单来说，你只需要完成这个文件预留的两个函数`initCache()`和`accessCache()`即可。
 
-!!!danger
-    注意，你也不可以修改`csim.h`中的任何内容，即使需要声明函数，直接声明在`csim.c`中即可
+为了给同学们自由的发挥空间，助教们仅给出了函数接口，而没有限制具体的实现方法。注意，在这个文件中，**你不可以修改上述两个函数的接口定义（也就是变量类型，个数等），也不可以修改有关cache的12个统计量**，但是，你**可以在这个文件中添加任何需要的头文件，并且定义任何你需要的数据结构和函数**。
 
 ```c
-#include "csim.h"
+// cache-impl.c
+#include "cachelab.h"
+#include <stdint.h>
+// feel free to include any files you need above
 
 int l1d_hits = 0;
 int l1d_misses = 0;
@@ -480,12 +662,16 @@ int l3_hits = 0;
 int l3_misses = 0;
 int l3_evictions = 0;
 
+// you can add your own data structures and functions below
+
+// you are not allowed to modify the declaration of this function
 void cacheInit() {
-	// TODO
+  // TODO
 }
 
+// you are not allowed to modify the declaration of this function
 void cacheAccess(char op, uint64_t addr, uint32_t len) {
-	// TODO
+  // TODO
 }
 ```
 
@@ -525,6 +711,9 @@ cache的访问trace依次为：
 - Read b
 - Read d
 
+!!!note
+    在这个简单的例子中，你可以假设每个变量会占用整个cache line，并且三级cache的cache line大小是一样的。换句话说，读取变量a放入cache的时候，a的数据宽度和cache line的大小是一致的。
+
 我们**强烈建议**大家在正式开始写代码之前，自己把上述的过程**完整的画一遍**，特别是注意cache中LRU的设置，evict的过程，cache miss时的处理流程，以及back invalidation的过程，完整的答案在[这里](../assets/files/cache.pdf)，有任何疑惑，欢迎上piazza进行提问。
 
 !!!tip
@@ -552,7 +741,173 @@ cache的访问trace依次为：
 
 ### 本地测试
 
-TODO:描述本地测试的命令，脚本使用方法，输出格式等。
+part A部分将会使用`traces-basic`，`traces-data-intensive`和`traces-hard`三个目录下的trace文件进行测试，测试难度**由易到难**，具体要求为：
+
+- `traces-basic/`：里面包含了12个**human-made**的，和一些简单的综合trace。一般只有几行到几十行不等，覆盖了大部分cache的访问路径。每个trace 5分，正确通过这个目录中的所有trace之后，你将得到基本的60分。
+- `traces-data-intensive/`：里面的trace来自于10个常见的数据密集型负载，并且剔除了指令访问，只关注于数据访问，trace行数从几千行到十几万行不等。每个trace 3分，正确通过所有trace之后，你将得到90分
+- `traces-hard`：里面的trace来自于10个真实的负载，包含了所有的指令和数据访问，trace行数从几万行到一百多万行不等。每个trace 1分，正确通过所有trace之后，你将得到最后的10分
+
+我们会使用`./test-csim`来测试你实现的模拟器，简单来说，测试会依次运行所有trace文件，并且在一个文件的**所有指令访问结束之后**查看cache的有关统计量，这些统计量需要和我们的参考模拟器的输出完全相同。
+
+下面是一个参考的输出：
+
+```bash
+$ ./test-csim
+Start testing basic traces...
+Testcase                                     Lines     Result    Random    Score     
+---------------------------------------------------------------------------------
+traces-basic/l3evict.trace                   15        PASS      IGNORE    5/5       
+traces-basic/mixed-2.trace                   90        PASS      IGNORE    5/5       
+traces-basic/l1Dhit.trace                    4         PASS      IGNORE    5/5       
+traces-basic/backinvalidation.trace          23        FAIL      IGNORE    0/5       
+  Details for trace <traces-basic/backinvalidation.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D         4        19        14         4        19        14
+      L1 I         0         0         0         0         0         0
+        L2        10        16         9        10        16        10
+        L3         6        16         8         6        16         8
+traces-basic/mixed-1.trace                   40        PASS      IGNORE    5/5       
+traces-basic/l1Devict.trace                  3         PASS      IGNORE    5/5       
+traces-basic/l2evict.trace                   7         PASS      IGNORE    5/5       
+traces-basic/l1missl2hit.trace               5         PASS      IGNORE    5/5       
+traces-basic/l1Ihit.trace                    5         PASS      IGNORE    5/5       
+traces-basic/l1Ievict.trace                  5         PASS      IGNORE    5/5       
+traces-basic/mixed-3.trace                   128       PASS      IGNORE    5/5       
+traces-basic/l1missl2missl3hit.trace         6         PASS      IGNORE    5/5       
+---------------------------------------------------------------------------------
+Total Score: 55 / 60
+   11 passed,     1 failed,    12 total
+Start testing data-intensive traces...
+Testcase                                     Lines     Result    Random    Score     
+---------------------------------------------------------------------------------
+traces-data-intensive/multiply.trace         25347     PASS      IGNORE    3/3       
+traces-data-intensive/add.trace              16451     PASS      IGNORE    3/3       
+traces-data-intensive/convolve.trace         80397     PASS      IGNORE    3/3       
+traces-data-intensive/sort.trace             8369      PASS      IGNORE    3/3       
+traces-data-intensive/grep.trace             38328     FAIL      IGNORE    0/3       
+  Details for trace <traces-data-intensive/grep.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D     37306      1066      1057     37306      1066      1058
+      L1 I         0         0         0         0         0         0
+        L2       310       863       829       310       863       831
+        L3       643       273       145       643       273       145
+traces-data-intensive/inner_product.trace    16388     PASS      IGNORE    3/3       
+csim: cache-impl.c:234: doCacheAccess: Assertion `hit' failed.
+Error running reference simulator: Status 134
+traces-data-intensive/long.trace             267988    FAIL      IGNORE    0/3       
+  Details for trace <traces-data-intensive/long.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D     14206      2182      2046    230444     56520     53285
+      L1 I         0         0         0         0         0         0
+        L2         1      2182      2150     47391     27797     24629
+        L3      1154      1029       901     33435     11645     11517
+traces-data-intensive/link_list.trace        49878     FAIL      IGNORE    0/3       
+  Details for trace <traces-data-intensive/link_list.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D     23530     27047     26988     23528     27049     26986
+      L1 I         0         0         0         0         0         0
+        L2      9098     20867     20710      9088     20879     20710
+        L3     12219     10106      9978     12220     10121      9993
+traces-data-intensive/transpose.trace        6147      FAIL      IGNORE    0/3       
+  Details for trace <traces-data-intensive/transpose.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D      2597      3550      3498      2597      3550      3499
+      L1 I         0         0         0         0         0         0
+        L2      2242      2332      2296      2242      2332      2300
+        L3      3056       292       164      3056       292       164
+traces-data-intensive/wc.trace               26311     FAIL      IGNORE    0/3       
+  Details for trace <traces-data-intensive/wc.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D     25488       865       856     25488       865       857
+      L1 I         0         0         0         0         0         0
+        L2       276       698       664       276       698       666
+        L3       486       265       138       486       265       138
+---------------------------------------------------------------------------------
+Total Score: 15 / 30
+    5 passed,     5 failed,    10 total
+Start testing data-intensive traces...
+Testcase                                     Lines     Result    Random    Score     
+---------------------------------------------------------------------------------
+traces-hard/multiply.trace                   149382    PASS      IGNORE    1/1       
+traces-hard/add.trace                        94710     PASS      IGNORE    1/1       
+traces-hard/ls.trace                         56756     FAIL      IGNORE    0/1       
+  Details for trace <traces-hard/ls.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D      1337      3412       806      1337      3412       802
+      L1 I     26377     25721     25666     26377     25721     25672
+        L2      1351     28190     28129      1351     28190     28158
+        L3     17768     10806     10678     17768     10806     10678
+traces-hard/convolve.trace                   1848393   FAIL      IGNORE    0/1       
+  Details for trace <traces-hard/convolve.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D     54747     25650      3049     54747     25650      3048
+      L1 I   1084283    683713    683703   1084282    683714    683706
+        L2    667993     44315     44259    667974     44335     44263
+        L3     46182      1078       950     46202      1078       950
+traces-hard/sort.trace                       45978     PASS      IGNORE    1/1       
+traces-hard/grep.trace                       406467    FAIL      IGNORE    0/1       
+  Details for trace <traces-hard/grep.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D     22544     15828       504     22544     15828       502
+      L1 I    184075    184064    184012    184075    184064    184016
+        L2    118023     81983     81941    118023     81983     81951
+        L3     79669      2416      2288     79669      2416      2288
+traces-hard/inner_product.trace              98329     PASS      IGNORE    1/1       
+traces-hard/link_list.trace                  249719    FAIL      IGNORE    0/1       
+  Details for trace <traces-hard/link_list.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D     21914     27578     20747     21914     27578     20748
+      L1 I    150210     50708     46836    150210     50708     46850
+        L2      8714     72902     72720      8714     72902     72823
+        L3     55772     19960     19832     55772     19960     19832
+traces-hard/transpose.trace                  31990     FAIL      IGNORE    0/1       
+  Details for trace <traces-hard/transpose.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D      2472      3675      3005      2472      3675      3005
+      L1 I     16309      9534      9195     16309      9534      9192
+        L2     10703      3530      3493     10700      3533      3495
+        L3      4242       307       179      4245       307       179
+traces-hard/wc.trace                         404114    FAIL      IGNORE    0/1       
+  Details for trace <traces-hard/wc.trace>
+                          Your simulator           Reference simulator
+     Level      Hits    Misses    Evicts      Hits    Misses    Evicts
+      L1 D      9093     17260       416      9093     17260       415
+      L1 I    155362    222441    222397    155362    222441    222399
+        L2    153542     86278     86243    153542     86278     86246
+        L3     84456      1929      1801     84456      1929      1801
+---------------------------------------------------------------------------------
+Total Score: 4 / 10
+    4 passed,     6 failed,    10 total
+Testing cache simulator done. Total scores: 74 / 100
+```
+
+上述输出拿到了74分，下面具体解释一下这个输出结果：
+
+- 输出结果会显示你FAIL或者PASS的trace
+- 每一行代表一个trace测试，最右边一栏将会显示这个trace的得分
+- 你必须保证4个cache共12个统计量和我们的参考模拟器的输出完全相同，才能得到这一个trace的分
+- Lines一列显示了每个trace文件的指令行数，比如`traces-hard`存在一个184万行的trace
+- 如果一个trace **FAIL**了，程序将会打印你的模拟器和参考模拟器的输出供你比对
+- 每通过一个`traces-*`目录的检查，程序将会打印这一部分的总得分。在三个部分的trace全部检查完毕后，会在最后打印你的总得分
+
+!!!tip
+    - 你应该首先保证最基础的60分，也就是`traces-basic`目录下的trace，因为这些trace文件比较短，方便debug
+    - 你应该**灵活使用**前面介绍过的参数进行debug
+    - 你可以将输出**重定向**到临时文件中以进行debug，注意，产生的输出文件可能会很大，尤其是开启了**快照**的情况下，请确保你有足够的磁盘空间
+    - **禁止打表**，我们在最后测试的时候会随机设置断点来检查你的程序是否正确，这也是测试输出的**Random**一栏，在开启Random测试后，你需要额外通过random的检查来拿到满分
+    - 如果你想确保万无一失，可以使用`-vt`参数并和我们的参考模拟器进行比对，如果完全一致，那随机测试就一定可以通过
+    - 你需要注意超时的问题，我们在./test-csim中设置了30秒超时，也就是说，你的程序需要在30秒内通过**所有trace**的测试，否则你只能得到在**超时之前PASS的trace**的分数。
 
 ### 思考题
 
@@ -567,21 +922,28 @@ TODO:描述本地测试的命令，脚本使用方法，输出格式等。
 - 本次实验要求实现严格的LRU算法，一种暴力实现方式是遍历所有cache line, 这样时间复杂度为$O(E)$，你可以设计一种复杂度为$O(1)$的实现方式吗
 - LRU算法在某种特定的情形下会造成100% miss，你可以发现这种访问模式吗？
 - 实际硬件中，实现LRU算法其实十分昂贵，因此大多数厂家采用近似LRU的方法，如果让你设计，你会如何设计这种算法？
+- 本次实验中在实现上有个小细节是，在发生conflict miss时，我们总是先从下一级fetch数据，然后再判断是否需要evict，这样做的好处和不足是什么？如果上述两个操作的流程互换之后，带来的好处和坏处是什么？你可能需要综合考虑inclusive policy带来的影响。
 - 进行cache访问时，需要根据内存地址提取出tag，set等字段，而CPU产生的地址实际上都是虚拟地址，需要额外的机制转换成物理地址（详见虚拟内存章节）。因此，cache的设计实际上可以分成physical index和virtual index两种方式，即采用物理地址或者虚拟地址两种地址解析tag，set等内容，那么：
     - 使用physical index的cache的优缺点是什么？
     - 使用virtual index的cache的优缺点是什么？
     - 你能不能设计一种方法综合利用上述两种方式各自的优势？
 - 本次实验中实现的模拟器只能应对顺序访问，如果需要扩展你的模拟器以支持多个线程并发访问，你该如何调整现有的代码？
 - 本次实验中不要求考虑多核之间的一致性问题，如果考虑多核之间一致性的问题，且L3作为多核之间的共享缓存，你该如何调整现有的代码？
-- 在考虑多核之间cache一致性的前提下，如果需要将inclusive策略变成NINE策略，你需要如何设计的代码？
+- 在考虑多核之间cache一致性的前提下，如果需要将inclusive策略变成NINE策略，你需要如何改进现有的代码？
 
+!!!note
+    对cache优化感兴趣的同学，可以参考[《Computer Architecture: A Quantitative Approach》](https://dn790008.ca.archive.org/0/items/computerarchitectureaquantitativeapproach6thedition/Computer%20Architecture%3A%20A%20Quantitative%20Approach%206th%20Edition.pdf)的第二章和附录B。
+
+    对cache一致性问题感兴趣的同学，可以参考上述书籍中的第5章。
+
+    如果你不理解为什么要学习有关cache和内存的知识，可以参考这篇论文: [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)。
 
 ## Part B: 优化矩阵转置函数
 
 !!! info
     这一部分为**选做**，为了不增加大家学业上的负担，整个Part B部分**不计入总分**（即使这部分的测试脚本可能会给出一个分数），仅供学有余力的同学完成。同时，有各种问题**优先使用piazza进行提问**，不建议直接私聊助教~。
 
-### Part B 实验内容
+### 实验内容
 
 Part B部分，你需要要在`trans.c`中写一个矩阵转置函数，使其在运行过程中尽可能少地引起Cache Miss。
 
@@ -608,27 +970,41 @@ void trans(int M, int N, int A[N][M], int B[M][N])
 
 ```c
 char transpose_submit_desc[] = "Transpose submission";
-void transpose_submit(int M, int N, int A[N][M], int B[M][N])
-{
-    // your code here
+void transpose_submit(int M, int N, int A[N][M], int B[M][N]) {
+  if (M == 32 && N == 32) {
+    // you can do 32x32 transpose here
+  } else if (M == 64 && N == 64) {
+    // you can do 64x64 transpose here
+  } else {
+    // you can do 61x67 transpose here
+  }
 }
 ```
 
 注意不要修改上面的描述字符串`"Transpose submission"`，打分时会寻找这个字符串来确定你提交的函数。
 
-### Part B 评测
+### 本地测试
 
-> 你可能会奇怪为什么Part B的实验评测部分会在这时候说明，实际上Part B是允许你进行“**面向测试用例编程**”，所以在这里先给给出PartB的所有的测试用例，以及每个测试用例对于Cache Miss次数的要求。
+!!!note
+    你可能会奇怪为什么Part B的实验评测部分会在这时候说明，实际上Part B是允许你进行“**面向测试用例编程**”，所以在这里先给给出PartB的所有的测试用例，以及每个测试用例对于Cache Miss次数的要求。
 
 可以通过运行`test-trans`文件来测试你的函数在运行时Cache Miss的数量，例如你想测试你的转置函数对于一个$61\times 67$的矩阵进行转置时Cache Miss的数量，可以使用如下命令进行测试：
 
 ```shell
-linux$ ./test-trans -M 61 -N 67
+./test-trans -M 61 -N 67
 ```
 
 命令行中的`-M`以及`-N`后跟的是矩阵的行数和列数。
 
-在Part B测试时，**Cache结构是固定的**，参数为(`s = 5, E = 1, b = 5`)，并且你不需要对于所有的大小的矩阵都完成转置的优化，我们在进行评分的时候**只会**对如下三个测试用例进行测试：
+`./test-trans`会使用另一个cache模拟器`csim-ref-partB`来模拟cache访问，这是一个一级cache。换句话说，你在完成Part B的时候，无需考虑多级cache的问题。
+
+在Part B测试时，**Cache结构是直接映射的，且不会发生改变**，具体参数配置为(s=5, E=1, b=5)：
+
+- size: 1KB
+- set: 32
+- cache line size: 32B
+
+并且你不需要对于所有的大小的矩阵都完成转置的优化，我们在进行评分的时候**只会**对如下三个测试用例进行测试：
 
 - $32 \times 32$ ($M = 32, N = 32$)
 - $64 \times 64$ ($M = 64, N = 64$)
@@ -642,9 +1018,10 @@ linux$ ./test-trans -M 61 -N 67
 
 也就是说，你可以在你的代码中显式地判断输入参数中矩阵的行数和列数，然后对每个测试用例进行单独编程。
 
-> **在开始写PartB之前请先看一下下面PartB的代码规则部分，明确要求后，你可以省去一些多余的工作。**
+!!!note
+    在开始写PartB之前请先看一下下面PartB的代码规则部分，明确要求后，你可以省去一些多余的工作。
 
-### Part B 代码规则
+### 代码规则
 
 1. `trans.c`文件一定要可以正常编译（0 warning 0 error）。
 2. 在每个转置函数中，你只允许定义最多12个`int`类型的局部变量。
@@ -654,17 +1031,17 @@ linux$ ./test-trans -M 61 -N 67
 6. 你的转置函数不能修改A矩阵的值，但可以随意修改B矩阵的值。
 7. 代码中不允许定义任何数组或者调用类似`malloc`的函数。
 
-
 在最后评分时，都会按照如上的代码规则进行严苛的检查，请大家注意不要出现超出代码规则的操作。
 
-### Part B 提示
+下面是对于Part B一些**可能有用**的提示：
 
-1. Cache Miss的三种情况：
-   - **Complusory Miss**：在刚开始冷启动的时候，这时候Cache内没有包含任何局部的任何信息，此时Cache Miss是无法忽略的无法避免的，但是准确估计这部分的Cache Miss数量对后续的实现有很多好处。
-   - **Capacity Misses**：当你的工作集（Working Set）太大的时候，往往Cache没法保存下所有的信息，此时会出现一些由于容量不足而导致的Cache Miss，比如我们实验中的Cache，通常只能保存下32 * 8个`int`。为了可以减少这种**Capacity Misses**，你可以尝试缩小你的求解问题的规模，大问题转化为小问题，大矩阵转化为几个小矩阵（啊呀我好像说漏嘴了一些关键信息（笑））。
-   - **Conflict Misses**：有些时候，不同地址的内容会映射到同一个Cache Line，这会导致简单的操作却反复的出现Cache Miss，一个好的解决方法是，另开空间或者采用临时变量（在本实验中允许12个以内的临时变量），来减轻这些问题的产生。
+!!!tip 
+    - Cache Miss的三种情况：
+        - **Complusory Miss**：在刚开始冷启动的时候，这时候Cache内没有包含任何局部的任何信息，此时Cache Miss是无法忽略的无法避免的，但是准确估计这部分的Cache Miss数量对后续的实现有很多好处。
+        - **Capacity Misses**：当你的工作集（Working Set）太大的时候，往往Cache没法保存下所有的信息，此时会出现一些由于容量不足而导致的Cache Miss，比如我们实验中的Cache，通常只能保存下32 * 8个`int`。为了可以减少这种**Capacity Misses**，你可以尝试缩小你的求解问题的规模，大问题转化为小问题，大矩阵转化为几个小矩阵（啊呀我好像说漏嘴了一些关键信息（笑））。
+        - **Conflict Misses**：有些时候，不同地址的内容会映射到同一个Cache Line，这会导致简单的操作却反复的出现Cache Miss，一个好的解决方法是，另开空间或者采用临时变量（在本实验中允许12个以内的临时变量），来减轻这些问题的产生。
 
-2. $64\times 64$矩阵转置的优化可能比较复杂，可以先完成$32\times 32$和$61\times 67$矩阵转置的优化，从中寻找灵感，再去完成$64\times 64$矩阵转置的优化。
+    - $64\times 64$矩阵转置的优化可能比较复杂，可以先完成$32\times 32$和$61\times 67$矩阵转置的优化，从中寻找灵感，再去完成$64\times 64$矩阵转置的优化。
 
 ### Cache性能分析
 
@@ -718,11 +1095,11 @@ TEST_TRANS_RESULTS=1:1184
 
 #### 程序运行的Cache访问过程分析
 
-我们的测试场景是一个直接映射的、Block大小是32字节的、一共有32个Cache Set的Cache模拟器(s=5, E=1, b=5)。
+我们的测试场景是一个**直接映射*8的、**Block大小是32字节**的、一共有**32个Cache Set**的Cache模拟器(s=5, E=1, b=5)。
 
 因此测试场景的Cache具有如下的典型结构：
 
-<img src = "\uploads\image\cachelab_cache_structure_partb.png" width = 300>
+![cache structure partb](../assets/images/cachelab_cache_structure_partb.png)
 
 一个Cache Line可以保存8个`int`，我们以这个Cache结构为例，考虑我们刚才的暴力做法：
 
@@ -735,10 +1112,9 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 }
 ```
 
-
 这里我们会按行优先读取`A`矩阵，然后一列一列地写入`B`矩阵。
 
-<img src = "\uploads\image\cachelab_matrix_a_b_partb.png" width = 500>
+![cache_matrix_a_b](../assets/images/cachelab_matrix_a_b_partb.png)
 
 我们知道，Cache是以Cache Line形式读取内存的。以第1行为例，在从内存读 `A[0][0]` 的时候，除了 `A[0][0]` 被加载到Cache中，它之后的 `A[0][1]---A[0][7]` 也会被加载进Cache。
 
@@ -746,7 +1122,7 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 
 接下来我们来定量地分析Cache Miss的次数。Cache只够存储一个矩阵的四分之一，`A`中的元素对应的Cache Line每隔8行就会重复。`A`和`B`的地址由于取余关系，每个元素对应的地址是相同的，各个元素对应Cache Line如下：
 
-<img src = "\uploads\image\cachelab_cache_lines_partb.png" width = 300>
+![cachelines partb](../assets/images/cachelab_cache_lines_partb.png)
 
 对于`A`，每8个`int`就会占满Cache的一组，所以每一行会有32/8=4次不命中；而对于`B`，考虑最坏情况，每一列都有32次不命中，由此，算出总不命中次数为4×32+32×32=1152。
 
@@ -754,8 +1130,8 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 
 ## 评分方法
 
-- Part A 72分
-- Part B 28分
+- Part A 100分
+- Part B 不计入总分
 
 和往常一样，我们将最终用于评分的`driver.py`脚本也分发给了大家，大家可以用于快速自测分数，使用方法如下：
 
@@ -769,37 +1145,77 @@ linux$ ./driver.py
 通常来说你会获得类似如下的输出：（这是一个满分输出）
 
 ```shell
-linux$ ./driver.py
+$ ./driver.py
 Part A: Testing cache simulator
 Running ./test-csim
-                        Your simulator     Reference simulator
-Points (s,E,b)    Hits  Misses  Evicts    Hits  Misses  Evicts
-     9 (1,1,1)       9       8       6       9       8       6  traces/yi2.trace
-     9 (4,2,4)       4       5       2       4       5       2  traces/yi.trace
-     9 (2,1,4)       2       3       1       2       3       1  traces/dave.trace
-     9 (2,1,3)     167      71      67     167      71      67  traces/trans.trace
-     9 (2,2,3)     201      37      29     201      37      29  traces/trans.trace
-     9 (2,4,3)     212      26      10     212      26      10  traces/trans.trace
-     9 (5,1,5)     231       7       0     231       7       0  traces/trans.trace
-     9 (5,1,5)  265189   21775   21743  265189   21775   21743  traces/long.trace
-    72
-
-
+Start testing basic traces...
+Testcase                                     Lines     Result    Random    Score     
+---------------------------------------------------------------------------------
+traces-basic/l3evict.trace                   15        PASS      IGNORE    5/5       
+traces-basic/mixed-2.trace                   90        PASS      IGNORE    5/5       
+traces-basic/l1Dhit.trace                    4         PASS      IGNORE    5/5       
+traces-basic/backinvalidation.trace          23        PASS      IGNORE    5/5       
+traces-basic/mixed-1.trace                   40        PASS      IGNORE    5/5       
+traces-basic/l1Devict.trace                  3         PASS      IGNORE    5/5       
+traces-basic/l2evict.trace                   7         PASS      IGNORE    5/5       
+traces-basic/l1missl2hit.trace               5         PASS      IGNORE    5/5       
+traces-basic/l1Ihit.trace                    5         PASS      IGNORE    5/5       
+traces-basic/l1Ievict.trace                  5         PASS      IGNORE    5/5       
+traces-basic/mixed-3.trace                   128       PASS      IGNORE    5/5       
+traces-basic/l1missl2missl3hit.trace         6         PASS      IGNORE    5/5       
+---------------------------------------------------------------------------------
+Total Score: 60 / 60
+   12 passed,     0 failed,    12 total
+Start testing data-intensive traces...
+Testcase                                     Lines     Result    Random    Score     
+---------------------------------------------------------------------------------
+traces-data-intensive/multiply.trace         25347     PASS      IGNORE    3/3       
+traces-data-intensive/add.trace              16451     PASS      IGNORE    3/3       
+traces-data-intensive/convolve.trace         80397     PASS      IGNORE    3/3       
+traces-data-intensive/sort.trace             8369      PASS      IGNORE    3/3       
+traces-data-intensive/grep.trace             38328     PASS      IGNORE    3/3       
+traces-data-intensive/inner_product.trace    16388     PASS      IGNORE    3/3       
+traces-data-intensive/long.trace             267988    PASS      IGNORE    3/3       
+traces-data-intensive/link_list.trace        49878     PASS      IGNORE    3/3       
+traces-data-intensive/transpose.trace        6147      PASS      IGNORE    3/3       
+traces-data-intensive/wc.trace               26311     PASS      IGNORE    3/3       
+---------------------------------------------------------------------------------
+Total Score: 30 / 30
+   10 passed,     0 failed,    10 total
+Start testing data-intensive traces...
+Testcase                                     Lines     Result    Random    Score     
+---------------------------------------------------------------------------------
+traces-hard/multiply.trace                   149382    PASS      IGNORE    1/1       
+traces-hard/add.trace                        94710     PASS      IGNORE    1/1       
+traces-hard/ls.trace                         56756     PASS      IGNORE    1/1       
+traces-hard/convolve.trace                   1848393   PASS      IGNORE    1/1       
+traces-hard/sort.trace                       45978     PASS      IGNORE    1/1       
+traces-hard/grep.trace                       406467    PASS      IGNORE    1/1       
+traces-hard/inner_product.trace              98329     PASS      IGNORE    1/1       
+traces-hard/link_list.trace                  249719    PASS      IGNORE    1/1       
+traces-hard/transpose.trace                  31990     PASS      IGNORE    1/1       
+traces-hard/wc.trace                         404114    PASS      IGNORE    1/1       
+---------------------------------------------------------------------------------
+Total Score: 10 / 10
+   10 passed,     0 failed,    10 total
+Testing cache simulator done. Total scores: 100 / 100
 Part B: Testing transpose function
 Running ./test-trans -M 32 -N 32
 Running ./test-trans -M 64 -N 64
 Running ./test-trans -M 61 -N 67
-
 Cache Lab summary:
                         Points   Max pts      Misses
-Csim correctness          72.0        72
-Trans perf 32x32          10.0        10         288
-Trans perf 64x64           8.0         8        1108
-Trans perf 61x67          10.0        10        1914
+Csim correctness         100.0       100
+Trans perf 32x32           0.0        30     invalid
+Trans perf 64x64           0.0        30     invalid
+Trans perf 61x67           0.0        40     invalid
           Total points   100.0       100
 ```
 
 如上分别是各个部分的组成，最后几行会输出你的总成绩。你可以通过如上方法快速得知你最终会得到多少的分数。
+
+!!!note
+    Part B不会不会计入最终得分，但是你仍然可以使用./driver.py进行测试，最后的Total points仅会记录part A的结果。
 
 ## 代码提交
 
