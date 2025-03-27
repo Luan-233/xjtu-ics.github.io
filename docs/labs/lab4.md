@@ -271,18 +271,18 @@ csim*         driver.py        test-trans.c  traces-data-intensive/
 - `cache-impl.c`：cache模拟器的源文件，是在**Part A中唯一需要修改**的文件
 - `csim.c`：cache模拟器的入口文件，助教们在这个文件中帮大家实现好了主要的处理逻辑
 - `csim-ref-partA`：参考cache模拟器，可以与自己的实现进行比对，将在Part A中使用
-- `test-csim`：用于part A测试的文件
-— `traces-*`：三个目录，用于存放在part A中用于测试的文件
-- `csim-ref-partB`：在part B中使用的cache模拟器
-- `trans.c`：part B中你需要修改的文件
+- `test-csim`：用于Part A测试的文件
+— `traces-*`：三个目录，用于存放在Part A中用于测试的文件
+- `csim-ref-partB`：在Part B中使用的cache模拟器
+- `trans.c`：Part B中你需要修改的文件
 - `tracegen.c`：生成`tracegen`的源文件
-- `tracegen`：part B中用于生成trace的可执行程序
-- `test-trans`：测试part B部分的可执行文件
-- `driver.py`：用于测试总得分的脚本
+- `tracegen`：Part B中用于生成trace的可执行程序
+- `test-trans`：测试Part B部分的可执行文件
+- `driver.py`：用于测试Part A + Part B总得分的脚本
 
 ## Part A：三级Cache模拟器
 
-在Part A中，你需要实现一个三级Cache模拟器，这个模拟器将会读取`traces`目录下的trace文件，然后开始运行，从而达到模拟cache访问的效果
+在Part A中，你需要实现一个三级Cache模拟器，这个模拟器将会读取`traces-*`目录下的trace文件，然后开始运行，从而达到模拟cache访问的效果。
 
 ### 三级缓存结构的基本配置
 
@@ -336,7 +336,7 @@ csim*         driver.py        test-trans.c  traces-data-intensive/
 例如：
 
 ```shell
-valgrind --log-fd=1 --tool=lackey -v --trace-mem=yes ls -l
+$ valgrind --log-fd=1 --tool=lackey -v --trace-mem=yes ls -l
 ```
 
 以上命令可以输出执行`ls -l`命令时实际产生的所有内存访问日志。
@@ -371,8 +371,7 @@ I 0400d7d4,8
 
 在Part A中，你**唯一需要**完成的文件是`cache-impl.c`文件，除此之外，你**严禁修改其他任何文件，包括删除现有文件或者自行创建新文件**。否则可能造成**本地评测和提交之后的评测结果不一致，或者无法编译通过**，产生的**一切后果由自己承担**。⚠️
 
-正如前面提到的，在Part A中你需要实现一个三级cache模拟器。作为参考标准，我们提供了一个
-已经正确实现的cache模拟器作为参考标准，以**二进制可执行程序**的形式发放，命名为`csim-ref-partA`。
+正如前面提到的，在Part A中你需要实现一个三级cache模拟器。作为参考标准，我们提供了一个已经正确实现的cache模拟器作为参考标准，以**二进制可执行程序**的形式发放，命名为`csim-ref-partA`。
 
 !!!warning
     假如你缺少这个程序，或者程序损坏无法运行，请立刻联系助教进行处理。
@@ -904,7 +903,7 @@ Testing cache simulator done. Total scores: 74 / 100
 - 如果一个trace **FAIL**了，程序将会打印你的模拟器和参考模拟器的输出供你比对
 - 每通过一个`traces-*`目录的检查，程序将会打印这一部分的总得分。在三个部分的trace全部检查完毕后，会在最后打印part A总得分，这也将是你整个cachelab的最终得分
 
-测试程序的输出还有Random一栏，这是用于随机测试，他将在每个trace中随机打入断点查看状态（实际上，现在的实现是**伪随机数**，也就是每次运行打入断点的位置是一样的），开启随机测试之后，你需要**额外**通过随机测试，才能拿到对应的分数。可以通过`-r（random）`参数来开启：
+测试程序的输出还有Random一栏，这是用于随机测试，他将在每个trace中随机打入断点查看状态（实际上，现在的实现是**伪随机数**，也就是每次运行打入断点的位置是一样的），开启随机测试之后，你需要**额外**通过随机测试，才能拿到对应的分数。可以通过`-r（--random）`参数来开启：
 
 ```bash
 $ ./test-csim -r
@@ -1529,7 +1528,7 @@ Trans perf 61x67           0.0        40     invalid
 如上分别是各个部分的组成，最后几行会输出你的总成绩。你可以通过如上方法快速得知你最终会得到多少的分数。
 
 !!!note
-    Part B不会不会计入最终得分，但是你仍然可以使用./driver.py进行测试，最后的Total points仅会记录part A的结果。
+    Part B不会计入最终得分，但是你仍然可以使用driver.py进行测试，最后的Total points仅会记录Part A的结果。
 
 ## 代码提交
 
