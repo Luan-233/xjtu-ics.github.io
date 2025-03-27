@@ -892,6 +892,7 @@ Total Score: 4 / 10
     4 passed,     6 failed,    10 total
 
 Testing cache simulator done. Total scores: 74 / 100
+Totally 2.795767 seconds passed.
 ```
 
 上述输出拿到了74分，下面具体解释一下这个输出结果：
@@ -1101,6 +1102,7 @@ Total Score: 4 / 10
     4 passed,     6 failed,    10 total
 
 Testing cache simulator done. Total scores: 74 / 100
+Totally 2.826064 seconds passed.
 ```
 
 开启随机测试之后，在Random一栏会显示PASS或者FAIL（否则为IGNORE），同时在FAIL时会相应的输出打入断点的那一行的详细信息，供你进行比对。
@@ -1427,11 +1429,11 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 但是为什么出现了1184次的Cache Miss，这是由于对角线上的元素通常存在一些特殊情况，对角线上的情况请大家自行分析哦~
 
 !!!note
-    程序优化的方法有很多，分块访问只是其中的一种，这远远不是极限，为了极致的性能，你还可以尝试SIMD（数据级），循环展开，指令级并行，OpenMP等内容。
+    程序优化的方法有很多，分块访问只是其中的一种，这远远不是极限，为了极致的性能，你还可以尝试SIMD（数据级并行），循环展开，指令级并行，OpenMP等内容。
 
     对上述内容感兴趣的同学，可以参考[《Computer Architecture: A Quantitative Approach》](../assets/files/Quantitative-Approach 6th.pdf)，详细的介绍了所有体系结构方面的并行处理和优化机制。
 
-    如果你觉得还不过瘾，可以期待[XJTU-ICS Lab5: Optimization Lab](./lab5.md)或者[CS 61C Project4](http://47.108.156.226:8080/projects/proj4/index.html#task-2-1-simd)。😍
+    如果你觉得还不过瘾，可以期待[XJTU-ICS Lab5: Optimization Lab](./lab5.md)或者[CS 61C Project4](http://47.108.156.226:8080/projects/proj4/index.html)。😍
 
 ## 评分方法
 
@@ -1479,6 +1481,7 @@ traces-basic/l1missl2missl3hit.trace         6         PASS      IGNORE    5/5
 ---------------------------------------------------------------------------------
 Total Score: 60 / 60
    12 passed,     0 failed,    12 total
+
 Start testing data-intensive traces...
 Testcase                                     Lines     Result    Random    Score     
 ---------------------------------------------------------------------------------
@@ -1495,7 +1498,8 @@ traces-data-intensive/wc.trace               26311     PASS      IGNORE    3/3
 ---------------------------------------------------------------------------------
 Total Score: 30 / 30
    10 passed,     0 failed,    10 total
-Start testing data-intensive traces...
+
+Start testing hard traces...
 Testcase                                     Lines     Result    Random    Score     
 ---------------------------------------------------------------------------------
 traces-hard/multiply.trace                   149382    PASS      IGNORE    1/1       
@@ -1511,17 +1515,21 @@ traces-hard/wc.trace                         404114    PASS      IGNORE    1/1
 ---------------------------------------------------------------------------------
 Total Score: 10 / 10
    10 passed,     0 failed,    10 total
+
 Testing cache simulator done. Total scores: 100 / 100
+Totally 2.720263 seconds passed.
+
 Part B: Testing transpose function
 Running ./test-trans -M 32 -N 32
 Running ./test-trans -M 64 -N 64
 Running ./test-trans -M 61 -N 67
+
 Cache Lab summary:
                         Points   Max pts      Misses
 Csim correctness         100.0       100
-Trans perf 32x32           0.0        30     invalid
-Trans perf 64x64           0.0        30     invalid
-Trans perf 61x67           0.0        40     invalid
+Trans perf 32x32          30.0        30         288
+Trans perf 64x64          30.0        30        1108
+Trans perf 61x67          40.0        40        1914
           Total points   100.0       100
 ```
 
