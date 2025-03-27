@@ -12,12 +12,13 @@ Lecture,5,2025-03-18T19:10:00,2025-03-18T21:00:00,Machine Prog: Advanced,Danfeng
 Lecture,5,2025-03-20T19:10:00,2025-03-20T21:00:00,The Memory Hierarchy,Danfeng Shan,assets/slides/08-memory-hierarchy.pdf,主B-204,6.1-6.3,
 Lab,5,2025-03-23T23:59:58,2025-03-23T23:59:59,No Lecture,,,,,[bomblab](labs/lab2.md) due
 Lecture,6,2025-03-25T19:10:00,2025-03-25T21:00:00,Cache Memories,Danfeng Shan,assets/slides/09-cache-memories.pdf,主B-204,6.4-6.7,
-Lecture,6,2025-03-27T19:10:00,2025-03-27T21:00:00,Cache Memories,Danfeng Shan,assets/slides/09-cache-memories.pdf,主B-204,6.4-6.7,"cachelab out"
+Lecture,6,2025-03-27T19:10:00,2025-03-27T21:00:00,Cache Memories,Danfeng Shan,assets/slides/09-cache-memories.pdf,主B-204,6.4-6.7,[cachelab](labs/lab4.md) out
 Lab,6,2025-03-30T23:59:58,2025-03-30T23:59:59,No Lecture,,,,,[attacklab](labs/lab3.md) due
 Lecture,7,2025-04-01T19:10:00,2025-04-01T21:00:00,,Hao Li,,主B-204,,
 Lecture,7,2025-04-03T19:10:00,2025-04-03T21:00:00,,Hao Li,,主B-204,,
 Lecture,8,2025-04-08T19:10:00,2025-04-08T21:00:00,,Hao Li,,主B-204,,
-Lecture,8,2025-04-10T19:10:00,2025-04-10T21:00:00,,Hao Li,,主B-204,,"cachelab due"
+Lecture,8,2025-04-10T19:10:00,2025-04-10T21:00:00,,Hao Li,,主B-204,,
+Lab,8,2025-04-13T23:59:58,2025-04-13T23:59:59,No Lecture,,,,,[cachelab](labs/lab4.md) due
 Lecture,9,2025-04-15T19:10:00,2025-04-15T21:00:00,,Hao Li,,主B-204,,
 Lecture,9,2025-04-17T19:10:00,2025-04-17T21:00:00,,Hao Li,,主B-204,,
 Lecture,10,2025-04-22T19:10:00,2025-04-22T21:00:00,,Hao Li,,主B-204,,
@@ -40,6 +41,6 @@ BombLab Out,3,2025-03-06T23:59:58,2025-03-06T23:59:59,Bomb Lab,,labs/lab2/,,,
 BombLab Due,5,2025-03-23T23:59:58,2025-03-23T23:59:59,Bomb Lab,,labs/lab2/,,,
 AttackLab Out,5,2025-03-18T23:59:58,2025-03-18T23:59:59,Attack Lab,,labs/lab3,,,
 AttackLab Due,6,2025-03-30T23:59:58,2025-03-30T23:59:59,Attack Lab,,labs/lab3,,,
-CacheLab Out,6,2025-03-27T23:59:58,2025-03-27T23:59:59,Cache Lab,,,,,
-CacheLab Due,8,2025-04-13T23:59:58,2025-04-13T23:59:59,Cache Lab,,,,,
+CacheLab Out,6,2025-03-27T23:59:58,2025-03-27T23:59:59,Cache Lab,,labs/lab4,,,
+CacheLab Due,8,2025-04-13T23:59:58,2025-04-13T23:59:59,Cache Lab,,labs/lab4,,,
 
