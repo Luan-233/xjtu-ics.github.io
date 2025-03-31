@@ -726,6 +726,7 @@ cache的访问trace依次为：
     - 本次实验仅要求模拟cache访问，因此你**无需关心具体的写入数据**
     - 你可以使用位运算相关技巧从传入的地址中提取出tag，set，block等信息
     - 你可以使用位运算相关技巧根据tag，set，block的信息拼接出内存地址
+    - 在每次访问某个cache时，你需要对这个cache的三个统计量（hit, miss, eviction）进行更新，包括对L1的读取/写入，对L2的读取，对L3的读取，L1写回脏数据到L2，L2写回到L3等
     - 在加载一条cache line时，你需要在当前cache set中找出一条可用的cache line, 换句话说，你需要找到**一条valid字段为false**的cache line。如果有多条可用的cache line，你需要选择**下标最小的一个**
     - 你需要**严格使用LRU算法**来找到需要evict的cache line
     - 你可以简单使用循环的方式来暴力实现LRU，而不考虑复杂度的问题，为此，你可以维护一个全局时钟并且仔细的设置cache line结构中的latest_used字段
@@ -1136,7 +1137,7 @@ traces-basic/backinvalidation.trace          23        FAIL      IGNORE    0/5
 traces-basic/mixed-1.trace                   40        PASS      IGNORE    5/5       
 traces-basic/l1Devict.trace                  3         PASS      IGNORE    5/5       
 traces-basic/l2evict.trace                   7         PASS      IGNORE    5/5       
-traces-basic/l1missl2hit.trace               5         PASS      IGNORE    5/5       XJTU-ICS lab 1: Data Lab 数据实验
+traces-basic/l1missl2hit.trace               5         PASS      IGNORE    5/5       
 traces-basic/l1Ihit.trace                    5         PASS      IGNORE    5/5       
 traces-basic/l1Ievict.trace                  5         PASS      IGNORE    5/5       
 traces-basic/mixed-3.trace                   128       PASS      IGNORE    5/5       
