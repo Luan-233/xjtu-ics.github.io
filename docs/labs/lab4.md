@@ -328,7 +328,7 @@ csim*         driver.py        test-trans.c  traces-data-intensive/
 
 ### Trace文件简介
 
-在`cachelab-handout`目录下的`traces`目录中有许多以`.trace`结尾的文件，我们称它们为trace文件。trace文件中是一系列访存日志，它作为Part A中Cache模拟器的输入，用来判断程序的正确性。trace文件是通过`Valgrind`工具生成的。
+在`cachelab-sp25`目录下的`traces`目录中有许多以`.trace`结尾的文件，我们称它们为trace文件。trace文件中是一系列访存日志，它作为Part A中Cache模拟器的输入，用来判断程序的正确性。trace文件是通过`Valgrind`工具生成的。
 
 !!!note
     `Valgrind`是一款用于内存调试、内存泄漏检测以及性能分析的软件开发工具。
@@ -623,7 +623,7 @@ extern CacheLine l3ucache[L3_SET_NUM][L3_LINE_NUM];
 ...
 ```
 
-具体而言，上述代码首先通过`initCache()`函数初始化cache，然后循环读取trace文件的每一行，并且提取出cache访问的一些必要信息，最后调用函数`cacheAccess()`真正访问cache，这两个函数定义在`cache-impl.c`中。
+具体而言，上述代码首先通过`cacheInit()`函数初始化cache，然后循环读取trace文件的每一行，并且提取出cache访问的一些必要信息，最后调用函数`cacheAccess()`真正访问cache，这两个函数定义在`cache-impl.c`中。
 
 和上述一样，在开始之前，你需要完全理解上述逻辑（不必是整个`csim.c`文件），特别是`cacheInit()`和`cacheAccess()`接口的定义，并且**禁止修改有关这个文件里面的任何内容**。
 
@@ -638,9 +638,9 @@ extern CacheLine l3ucache[L3_SET_NUM][L3_LINE_NUM];
 - 第二个参数为访问地址，它是**trace文件中的地址的十进制表示**的结果
 - 第三个参数为一次访问的长度，也就是字节数量
 
-最后，终于迎来了我们的主角，`cache-impl.c`。简单来说，你只需要完成这个文件预留的两个函数`initCache()`和`accessCache()`即可。
+最后，终于迎来了我们的主角，`cache-impl.c`。简单来说，你只需要完成这个文件预留的两个函数`cacheInit()`和`cacheAccess()`即可。
 
-为了给同学们自由的发挥空间，助教们仅给出了函数接口，而没有限制具体的实现方法。注意，在这个文件中，**你不可以修改上述两个函数的接口定义（也就是变量类型，个数等），也不可以修改有关cache的12个统计量**，但是，你**可以在这个文件中添加任何需要的头文件，并且定义任何你需要的数据结构和函数**。
+为了给同学们自由的发挥空间，助教们仅给出了函数接口，而没有限制具体的实现方法。注意，在这个文件中，**你不可以修改上述两个函数的接口定义（也就是变量类型，个数等），也不可以修改有关cache的12个统计量的定义**，但是，你**可以在这个文件中添加任何需要的头文件，并且定义任何你需要的数据结构和函数**。
 
 ```c
 // cache-impl.c
@@ -743,7 +743,7 @@ cache的访问trace依次为：
 
 ### 本地测试
 
-Part A部分将会使用`traces-basic`，`traces-data-intensive`和`traces-hard`三个目录下的trace文件进行测试，测试难度**由易到难**，具体要求为：
+Part A部分将会使用`traces-basic`，`traces-data-intensive`和`traces-hard`三个目录下的trace文件进行测试，**你同样不允许修改任何trace文件**，测试难度**由易到难**，具体要求为：
 
 - `traces-basic/`：里面包含了12个**human-made**的，和一些简单的综合trace。一般只有几行到几十行不等，覆盖了大部分cache的访问路径。每个trace 5分，正确通过这个目录中的所有trace之后，你将得到基本的60分。
 - `traces-data-intensive/`：里面的trace来自于10个常见的数据密集型负载，并且剔除了指令访问，只关注于数据访问，trace行数从几千行到十几万行不等。每个trace 3分，正确通过所有trace之后，你将得到额外的30分
