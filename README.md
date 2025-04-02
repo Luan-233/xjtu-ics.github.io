@@ -8,6 +8,18 @@
 
 网页构建使用`github action`作为自动化构建工具，因此只需要将修改后的内容push到远程仓库即可对网站进行修改。
 
+建议在对网页修改前在本地预览效果，本网页使用[mkdocs-material](https://squidfunk.github.io/mkdocs-material/)框架构建。
+
+本地环境配置命令如下：
+```bash
+pip install mkdocs-material mkdocs-open-in-new-tab mkdocs-macros-plugin pandas tabulate
+```
+
+本地预览命令如下：
+```bash
+mkdocs serve
+```
+
 ## 添加个人资料  
 
 按照以下格式创建一个JSON文件填写您的个人信息。  
@@ -37,10 +49,6 @@ your name
 ## 生成日程  
 
 使用`make g-events`命令生成所有课程的日程安排，并存储在`docs/static/data/events.csv`中。具体内容可以在Makefile中修改。  
-
-## 添加日程  
-
-您可以使用`make a-events`命令添加日程，并存储在`docs/static/data/events.csv`中。具体用法如下。  
 
 ## 修改日程  
 
