@@ -58,7 +58,7 @@ Lecture,2,2025-02-25T19:10:00,2025-02-25T21:00:00,Machine Prog: Basics,Danfeng S
 
 > 目前，`title`列仅有值为`Lecture`和`Lab`的对应内容可以在`homepage`中加载，而所有行均可在`calendar`中加载。具体筛选逻辑在`scripts/macros.py`。
 
-其中，pdf等文件在`assets/slides`文件夹中上传，文档中出现的图片文件在`assets/images`中上传。
+其中，slide文件在`assets/slides`文件夹中上传，文档中出现的图片文件在`assets/images`中上传，其他文件在`assets/files`文件夹中上传。
 
 > 有关网页内超链接，由于渲染方式的不同，在主页中出现的链接要以`labs/lab1.md`的形式添加，在calendar中出现的链接要以`labs/lab1`的形式添加。具体原因是在mkdocs中，md文档相对路径不需要添加`.md`后缀；而网页的有些部分需要以html的格式进行写入（如主页的slide按钮），此时相对路径需要添加`.md`后缀。
 
