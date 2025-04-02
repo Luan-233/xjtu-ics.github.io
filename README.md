@@ -70,3 +70,18 @@ Lecture,2,2025-02-25T19:10:00,2025-02-25T21:00:00,Machine Prog: Basics,Danfeng S
 
 > 有关网页内超链接，由于渲染方式的不同，在主页中出现的链接要以`labs/lab1.md`的形式添加，在calendar中出现的链接要以`labs/lab1`的形式添加。具体原因是在mkdocs中，md文档相对路径不需要添加`.md`后缀；而网页的有些部分需要以html的格式进行写入（如主页的slide按钮），此时相对路径需要添加`.md`后缀。
 
+## 更新指导书
+
+直接在`docs/labs`中寻找对应的实验指导书md文件修改即可。如果需要发布，可以修改`mkdocs.yml`文件中：
+```yaml
+  - Labs:
+    - "Lab 0: Tutorial and Environmental Preparation": labs/lab0.md
+    - "Lab 1: Data Lab": labs/lab1.md
+    - "Lab 2: Bomb Lab": labs/lab2.md
+    - "Lab 3: Attack Lab": labs/lab3.md
+    - "Lab 4: Cache Lab": labs/lab4.md
+    # - "Lab 5: Optimization Lab": labs/lab5.md
+    # - "Lab 6: Linker Lab": labs/lab6.md
+```
+这里控制着网页的目录结构，如果想发布指导书，只需删除注释即可。
+
