@@ -1,45 +1,64 @@
-# OVERVIEW
+# 概述  
 
-This is the homepage of the ICS course at Xi'an Jiaotong University, which is available for members of the ICS team at Xi'an Jiaotong University to edit.
+这里是西安交通大学ICS课程的主页，只有西安交通大学ICS团队的成员可以编辑此页面。  
 
-If you have a better design idea for the course homepage of Xi'an Jiaotong University, feel free to contact the XJTU ICS team  and submit your pull request.
+如果您对西安交通大学课程主页有更好的设计想法，欢迎联系XJTU ICS团队并提交您的pull request。
 
-# USAGE for TEAM MEMBER
+# 团队成员使用指南
 
-## ADD PROFILE
+网页构建使用`github action`作为自动化构建工具，因此只需要将修改后的内容push到远程仓库即可对网站进行修改。
 
-Create a JSON file for your personal information in the following format.
+## 添加个人资料  
 
-```json
-{
-    "homepage_url": "https://example.com",
-    "name": "your name",
-    "email": "your email",
-    "office": "your office",
-    "intro": "your intro",
-}
+按照以下格式创建一个JSON文件填写您的个人信息。  
+
+```json  
+{  
+    "homepage_url": "https://example.com",  
+    "name": "您的姓名",  
+    "email": "您的邮箱",  
+    "office": "您的办公室",  
+    "intro": "个人简介",  
+}  
+```  
+
+然后按照以下目录结构将JSON文件和个人头像文件压缩为ZIP文件。如果没有添加图片，将使用默认头像。  
+
+ZIP文件的名称是您姓名的缩写（例如jndu）。  
+
 ```
+your name
+├── example.json  
+└── avatar.png（支持JPG、PNG、JPEG等格式）  
+```  
 
-Then compress the JSON file and the profile picture file into a ZIP file according to the following directory structure. If no image is added, a default profile picture will be used.
+将您的ZIP文件提交至`data/profile-ta`，并运行`make profile-ta`。  
 
-The name of the ZIP file is the abbreviation of your name (such as jndu).
+## 生成日程  
+
+使用`make g-events`命令生成所有课程的日程安排，并存储在`docs/static/data/events.csv`中。具体内容可以在Makefile中修改。  
+
+## 添加日程  
+
+您可以使用`make a-events`命令添加日程，并存储在`docs/static/data/events.csv`中。具体用法如下。  
+
+## 修改日程  
+
+目前只能手动修改`docs/static/data/events.csv`文件。
+
+在`events.csv`文件中，可以看到如下内容：
 
 ```
-yourname
-├── example.json
-└── avatar.png (File formats such as JPG, PNG, and JPEG are available.)
+title,Week,start,end,theme,Instructors,pptLink,location,Reading,extra
+Lecture,1,2025-02-18T19:10:00,2025-02-18T21:00:00,Overview,Hao Li && Danfeng Shan,assets/slides/01-overview-class-rules.pdf,主B-204,1,
+Lecture,1,2025-02-20T19:10:00,2025-02-20T21:00:00,"Bits, Bytes, & Integers",Danfeng Shan,assets/slides/02-bits-ints.pdf,主B-204,2.1-2.3,[datalab](labs/lab1.md) out
+Lecture,2,2025-02-25T19:10:00,2025-02-25T21:00:00,Machine Prog: Basics,Danfeng Shan,assets/slides/03-machine-basics.pdf,主B-204,3.1-3.3,
 ```
+对这个csv文件的指定行与列进行修改即可同时对`homepage`和`calendar`的内容进行修改。
 
-Submit your ZIP file to `data/profile-ta`, and run `make profile-ta`.
+> 目前，`title`列仅有值为`Lecture`和`Lab`的对应内容可以在`homepage`中加载，而所有行均可在`calendar`中加载。具体筛选逻辑在`scripts/macros.py`。
 
-## GENERATE EVENTS
+其中，pdf等文件在`assets/slides`文件夹中上传，文档中出现的图片文件在`assets/images`中上传。
 
-Use the `make g-events` command to generate the schedule for all courses and store it in `docs/static/events.json`. The specific content can be modified in the Makefile.
+> 有关网页内超链接，由于渲染方式的不同，在主页中出现的链接要以`labs/lab1.md`的形式添加，在calendar中出现的链接要以`labs/lab1`的形式添加。具体原因是在mkdocs中，md文档相对路径不需要添加`.md`后缀；而网页的有些部分需要以html的格式进行写入（如主页的slide按钮），此时相对路径需要添加`.md`后缀。
 
-## ADD EVENTS
-
-You can use the `make a-events` command to add events and store them in `docs/static/events.json`. The specific usage is as follows.
-
-## MODIFY EVENTS
-
-For the time being, modifications can only be made manually in `docs/static/events.json`.
